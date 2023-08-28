@@ -65,4 +65,22 @@ public class CheckoutServiceTests
         //Assert
         Assert.AreEqual(50, total);
     }
+
+    [Test]
+    public void GetTotalPrice_calculate_single_price_with_target_offer()
+    {
+        //Assemble
+        var sku = "A";
+        offers.Add(new Offer{ Sku = sku, Quantity = 3, SpecialPrice = 130});
+        var service = new CheckoutService(units, offers, checkoutRepository);
+
+        //Act
+        service.Scan(sku);
+        service.Scan(sku);
+        service.Scan(sku);
+        var total = service.GetTotalPrice();
+
+        //Assert
+        Assert.That(total, Is.EqualTo(130));
+    }
 }

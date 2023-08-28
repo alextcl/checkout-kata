@@ -17,7 +17,13 @@ public class CheckoutService : ICheckout
 
     public int GetTotalPrice()
     {
-        throw new NotImplementedException();
+        var totalPrice = 0;
+        foreach(var item in checkoutRepository)
+        {
+            var sku = stockKeepingUnits.Single(s => s.Identifier == item.Key);
+            totalPrice += item.Value * sku.UnitPrice;
+        }
+        return totalPrice;
     }
 
     public void Scan(string item)
@@ -28,9 +34,9 @@ public class CheckoutService : ICheckout
         if (sku == null)
             throw new ArgumentException($"Invalid item {item}");
 
-        if(!checkoutRepository.ContainsKey(item))
-            checkoutRepository.Add(item, 1);
+        if(!checkoutRepository.ContainsKey(sku.Identifier))
+            checkoutRepository.Add(sku.Identifier, 1);
         else
-            checkoutRepository[item]++;
+            checkoutRepository[sku.Identifier]++;
     }
 }

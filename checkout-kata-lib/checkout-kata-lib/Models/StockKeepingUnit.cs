@@ -3,5 +3,5 @@
 public class StockKeepingUnit
 {
     public string Identifier { get; set; }
-    public decimal UnitPrice { get; set; }
+    public int UnitPrice { get; set; }
 }

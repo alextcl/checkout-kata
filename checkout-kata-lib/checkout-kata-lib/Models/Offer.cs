@@ -2,8 +2,8 @@
 
 public class Offer
 {
-    public HashSet<string> SKUs {get; set;}
+    public string Sku {get; set;}
     public int Quantity { get; set; }
 
-    public decimal SpecialPrice {get;set;}
+    public int SpecialPrice {get;set;}
 }
