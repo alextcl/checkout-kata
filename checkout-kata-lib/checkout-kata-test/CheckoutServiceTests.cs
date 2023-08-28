@@ -4,16 +4,24 @@ namespace checkout_kata_test;
 
 public class CheckoutServiceTests
 {
-    private List<StockKeepingUnit> units = new List<StockKeepingUnit>();
-    private List<Offer> offers = new List<Offer>();
+    private List<StockKeepingUnit> units;
+    private List<Offer> offers;
+    private IDictionary<string, int> checkoutRepository;
 
     [SetUp]
     public void Setup()
     {
-        units.Add(new StockKeepingUnit{ Identifier = "A", UnitPrice = 50 });
-        units.Add(new StockKeepingUnit{ Identifier = "B", UnitPrice = 30 });
-        units.Add(new StockKeepingUnit{ Identifier = "C", UnitPrice = 20 });
-        units.Add(new StockKeepingUnit{ Identifier = "D", UnitPrice = 10 });
+        units = new List<StockKeepingUnit>
+        {
+            new StockKeepingUnit { Identifier = "A", UnitPrice = 50 },
+            new StockKeepingUnit { Identifier = "B", UnitPrice = 30 },
+            new StockKeepingUnit { Identifier = "C", UnitPrice = 20 },
+            new StockKeepingUnit { Identifier = "D", UnitPrice = 10 }
+        };
+
+        offers = new List<Offer>();
+
+        checkoutRepository = new Dictionary<string, int>();
     }
 
     [Test]
@@ -21,12 +29,14 @@ public class CheckoutServiceTests
     {
         //Assemble
         var sku = "A";
-        var service = new CheckoutService(units, offers);
+        var service = new CheckoutService(units, offers, checkoutRepository);
 
         //Act
         service.Scan(sku);
 
         //Assert
+        Assert.IsTrue(checkoutRepository.ContainsKey(sku));
+        Assert.That(checkoutRepository[sku], Is.EqualTo(1));
     }
 
     [Test]
@@ -34,7 +44,7 @@ public class CheckoutServiceTests
     {
         //Assemble
         var sku = "E";
-        var service = new CheckoutService(units, offers);
+        var service = new CheckoutService(units, offers, checkoutRepository);
 
         //Act
         Assert.Throws<ArgumentException>(() => service.Scan(sku));

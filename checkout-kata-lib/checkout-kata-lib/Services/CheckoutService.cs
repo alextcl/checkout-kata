@@ -6,13 +6,13 @@ public class CheckoutService : ICheckout
 {
     private readonly IEnumerable<StockKeepingUnit> stockKeepingUnits;
     private readonly IEnumerable<Offer> offers;
+    private readonly IDictionary<string, int> checkoutRepository;
 
-    private readonly IDictionary<string, int> unitQuantity;
-
-    public CheckoutService(IEnumerable<StockKeepingUnit> stockKeepingUnits, IEnumerable<Offer> offers)
+    public CheckoutService(IEnumerable<StockKeepingUnit> stockKeepingUnits, IEnumerable<Offer> offers, IDictionary<string, int> checkoutRepository)
     {
         this.stockKeepingUnits = stockKeepingUnits;
         this.offers = offers;
+        this.checkoutRepository = checkoutRepository;
     }
 
     public int GetTotalPrice()
@@ -28,6 +28,9 @@ public class CheckoutService : ICheckout
         if (sku == null)
             throw new ArgumentException($"Invalid item {item}");
 
-        throw new NotImplementedException();
+        if(!checkoutRepository.ContainsKey(item))
+            checkoutRepository.Add(item, 1);
+        else
+            checkoutRepository[item]++;
     }
 }
