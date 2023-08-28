@@ -1,0 +1,3 @@
+{
+    "dotnet.defaultSolution": "checkout-kata-lib/checkout-kata-lib.sln"
+}
