@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "checkout-kata-lib", "checkout-kata-lib\checkout-kata-lib.csproj", "{4A8EF79C-A3DE-434A-8FD1-710DAF4328B5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "checkout-kata-test", "checkout-kata-test\checkout-kata-test.csproj", "{92477099-483B-4B8C-A381-BE1FC21E98C1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{4A8EF79C-A3DE-434A-8FD1-710DAF4328B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A8EF79C-A3DE-434A-8FD1-710DAF4328B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A8EF79C-A3DE-434A-8FD1-710DAF4328B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92477099-483B-4B8C-A381-BE1FC21E98C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92477099-483B-4B8C-A381-BE1FC21E98C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92477099-483B-4B8C-A381-BE1FC21E98C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92477099-483B-4B8C-A381-BE1FC21E98C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
