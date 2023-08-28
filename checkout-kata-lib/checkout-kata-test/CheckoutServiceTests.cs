@@ -28,4 +28,17 @@ public class CheckoutServiceTests
 
         //Assert
     }
+
+    [Test]
+    public void Scan_should_reject_invalid_item()
+    {
+        //Assemble
+        var sku = "E";
+        var service = new CheckoutService(units, offers);
+
+        //Act
+        Assert.Throws<ArgumentException>(() => service.Scan(sku));
+
+        //Assert
+    }
 }

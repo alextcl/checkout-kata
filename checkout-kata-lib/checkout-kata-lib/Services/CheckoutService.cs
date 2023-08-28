@@ -1,4 +1,6 @@
-﻿namespace checkout_kata_lib;
+﻿using CommunityToolkit.Diagnostics;
+
+namespace checkout_kata_lib;
 
 public class CheckoutService : ICheckout
 {
@@ -20,6 +22,12 @@ public class CheckoutService : ICheckout
 
     public void Scan(string item)
     {
+        Guard.IsNotNullOrEmpty(item);
+
+        var sku = stockKeepingUnits.FirstOrDefault(x => string.Equals(x.Identifier, item, StringComparison.OrdinalIgnoreCase));
+        if (sku == null)
+            throw new ArgumentException($"Invalid item {item}");
+
         throw new NotImplementedException();
     }
 }
