@@ -51,4 +51,18 @@ public class CheckoutServiceTests
 
         //Assert
     }
+
+    [Test]
+    public void GetTotalPrice_calculate_single_price_with_no_offer()
+    {
+        //Assemble
+        var service = new CheckoutService(units, offers, checkoutRepository);
+
+        //Act
+        service.Scan("A");
+        var total = service.GetTotalPrice();
+
+        //Assert
+        Assert.AreEqual(50, total);
+    }
 }
