@@ -20,8 +20,16 @@ public class CheckoutService : ICheckout
         var totalPrice = 0;
         foreach(var item in checkoutRepository)
         {
+            var remainder = item.Value;
+            var offer = offers.FirstOrDefault(s => s.Sku == item.Key);
+            if(offer != null && item.Value >= offer.Quantity)
+            {
+                var timesApplied = Math.DivRem(item.Value, offer.Quantity, out remainder);
+                totalPrice += offer.SpecialPrice * timesApplied;
+            }
+
             var sku = stockKeepingUnits.Single(s => s.Identifier == item.Key);
-            totalPrice += item.Value * sku.UnitPrice;
+            totalPrice += remainder * sku.UnitPrice;
         }
         return totalPrice;
     }

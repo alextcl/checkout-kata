@@ -19,7 +19,11 @@ public class CheckoutServiceTests
             new StockKeepingUnit { Identifier = "D", UnitPrice = 10 }
         };
 
-        offers = new List<Offer>();
+        offers = new List<Offer>
+        {
+            new Offer { Sku = "A", Quantity = 3, SpecialPrice = 130 },
+            new Offer { Sku = "B", Quantity = 2, SpecialPrice = 45 }
+        };
 
         checkoutRepository = new Dictionary<string, int>();
     }
@@ -56,6 +60,7 @@ public class CheckoutServiceTests
     public void GetTotalPrice_calculate_single_price_with_no_offer()
     {
         //Assemble
+        offers.Clear();
         var service = new CheckoutService(units, offers, checkoutRepository);
 
         //Act
@@ -63,7 +68,7 @@ public class CheckoutServiceTests
         var total = service.GetTotalPrice();
 
         //Assert
-        Assert.AreEqual(50, total);
+        Assert.That(total, Is.EqualTo(50));
     }
 
     [Test]
@@ -71,16 +76,77 @@ public class CheckoutServiceTests
     {
         //Assemble
         var sku = "A";
-        offers.Add(new Offer{ Sku = sku, Quantity = 3, SpecialPrice = 130});
         var service = new CheckoutService(units, offers, checkoutRepository);
 
         //Act
-        service.Scan(sku);
-        service.Scan(sku);
-        service.Scan(sku);
+        foreach(var _ in Enumerable.Repeat(0, 3))
+        {
+            service.Scan(sku);
+        }
+
         var total = service.GetTotalPrice();
 
         //Assert
         Assert.That(total, Is.EqualTo(130));
+    }
+
+    [Test]
+    public void GetTotalPrice_calculate_single_price_with_target_offer_and_extra_item()
+    {
+        //Assemble
+        var sku = "A";
+        var service = new CheckoutService(units, offers, checkoutRepository);
+
+        //Act
+        foreach(var _ in Enumerable.Repeat(0, 4))
+        {
+            service.Scan(sku);
+        }
+        var total = service.GetTotalPrice();
+
+        //Assert
+        Assert.That(total, Is.EqualTo(180));
+    }
+
+    [Test]
+    public void GetTotalPrice_calculate_multiple_items_with_multiples_offers()
+    {
+        //Assemble
+        var service = new CheckoutService(units, offers, checkoutRepository);
+
+        //Act
+        var items = Enumerable.Repeat(0, 3).Select(_ =>"A").ToList();
+        items.AddRange(Enumerable.Repeat(0, 2).Select(_ => "B"));
+
+        foreach(var sku in items)
+        {
+            service.Scan(sku);
+        }
+        var total = service.GetTotalPrice();
+
+        //Assert
+        Assert.That(total, Is.EqualTo(175));
+    }
+
+    [Test]
+    public void GetTotalPrice_calculate_offer_nonoffer_items()
+    {
+        //Assemble
+        var service = new CheckoutService(units, offers, checkoutRepository);
+
+        //Act
+        var items = Enumerable.Repeat(0, 3).Select(_ =>"A").ToList();
+        items.AddRange(Enumerable.Repeat(0, 2).Select(_ => "B"));
+        items.AddRange(Enumerable.Repeat(0, 2).Select(_ => "C"));
+        items.AddRange(Enumerable.Repeat(0, 2).Select(_ => "D"));
+
+        foreach(var sku in items)
+        {
+            service.Scan(sku);
+        }
+        var total = service.GetTotalPrice();
+
+        //Assert
+        Assert.That(total, Is.EqualTo(235));
     }
 }
